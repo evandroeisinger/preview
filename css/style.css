@@ -35,6 +35,11 @@ body {
 		display: block;
 		margin-bottom: 20px; }
 			section.action .drop {
+				transition: background-color 0.25s;
+				-moz-transition: background-color 0.25s;
+				-webkit-transition: background-color 0.25s;
+				-o-transition: background-color 0.25s;
+
 				width: 100%;
 				border: 2px #C1C1C1 dotted;
 				border-radius: 10px;
@@ -42,3 +47,7 @@ body {
 				text-align: center;
 				text-transform: uppercase;
 				color: #C1C1C1; }
+					section.action .drop:hover {
+						border: none;
+						color: white;
+						background-color: black; }

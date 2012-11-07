@@ -7,10 +7,10 @@ It's a file preview plugin. Which returns the file content and info, so you can 
 
 ## TODO
 
-* Initial Structure
 * Identify file types
 * Get file info
 * Outup file content
+* Callback functions
 
 ## Contributing
 
