@@ -6,17 +6,10 @@
 
 body {
 	margin: 0 auto;
-	display: -moz-box;
-	-moz-box-pack: center;
-	-moz-box-align: center;
-	-moz-box-orient: horizontal;
-	display: -webkit-box;
-	-webkit-box-pack: center;
-	-webkit-box-align: center;
-	-webkit-box-orient: horizontal;
 	font-family: 'Open Sans', Arial, sans-serif; }
 
 .container {
+	margin: 0 auto;
 	padding: 20px;
 	width: 100%;
 	max-width: 768px; }
@@ -47,7 +40,7 @@ body {
 				text-align: center;
 				text-transform: uppercase;
 				color: #C1C1C1; }
-					section.action .drop:hover {
-						border: none;
+					section.action .drop:hover, section.action .drop.drag {
+						border-color: black;
 						color: white;
 						background-color: black; }

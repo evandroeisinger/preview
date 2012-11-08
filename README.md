@@ -7,6 +7,7 @@ It's a file preview plugin. Which returns the file content and info, so you can 
 
 ## TODO
 
+* Improve the plugin pattern
 * Identify file types
 * Get file info
 * Outup file content

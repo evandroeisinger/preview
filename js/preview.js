@@ -4,62 +4,96 @@
  * Licensed under the MIT license
  */
 
-;(function ( $, window, document, undefined ){
+;(function ( $, window, document, undefined ) {
 
-    var callback = {
-        onSetup  : function( response ){},
-        onCheck  : function( response ){},
-        onDrop   : function( response ){},
-        onDrag   : function( response ){},
-        onChange : function( response ){},
-        onLoad   : function( response ){},
-        onError  : function( response ){}
-    };
+    var Preview = function( element, listeners ) {
+            this.element  = element;
+            this.callback = $.extend( {}, callback, listeners );
+            _preview = this;
+        },
+        callback = {
+            onDrop   : function( response ) {},
+            onDrag   : function( response ) {},
+            onOver   : function( response ) {},
+            onChange : function( response ) {},
+            onRender : function( response ) {},
+            onError  : function( response ) {}
+        },
+        _preview = null;
 
-    function preview( element, custom ){
-        this.element  = element;
-        this.callback = $.extend( {}, callback, custom );
-        this.setup();
-    }
-
-    preview.prototype = {
+    Preview.prototype = {
         setup : function() {
-            if( window.FileReader ){
-                this.element.each(function( index, element ){
-                    switch( element.tagName ){
-                        case 'INPUT' : 
-                            $(element).on( 'change',function( event ){
-                                preview.prototype.check( this.files );
+            if( window.FileReader ) {
+                switch( _preview.element.tagName ) {
+                    case 'INPUT' :
+                        _preview.element.onchange = function( event ) {
+                            _preview.render( this.files );
+                            _preview.callback.onChange({ 
+                                files  : this.files, 
+                                _event : event
                             });
-                            break;
-                        default :
-                            $(element).on( 'dragover',function( event ){
-                                event.stopPropagation();
-                                return false;
+                        };
+                        break;
+                    default :
+                        _preview.element.ondragenter = function( event ) {
+                            event.stopPropagation();
+                            _preview.callback.onDrag({
+                                target : _preview.element,
+                                _event : event
                             });
-                            $(element).on( 'drop',function( event ){
-                                event.stopPropagation();
-                                preview.prototype.check( event.originalEvent.dataTransfer.files );
-                                return false;
+                            return false;
+                        }
+                        _preview.element.ondragover = function( event ) {
+                            event.stopPropagation();
+                            _preview.callback.onOver({
+                                target : _preview.element,
+                                _event : event
                             });
-                            break;
-                    }
-                });
+                            return false;
+                        }
+                        _preview.element.ondrop = function( event ) {
+                            event.stopPropagation();
+                            _preview.render( event.dataTransfer.files );
+                            _preview.callback.onDrop({ 
+                                files  : event.dataTransfer.files, 
+                                _event : event
+                            });
+                            return false;
+                        }
+                        break;
+                }
             } else {
-                this.callback.onError({
+                _preview.callback.onError({
                     code  : 1,
                     alert : 'This browser doesnt support the File API' 
                 })
             }
         },
-        check : function( files ){
-            console.log( files );
-        },
-        load : function( event ){}
+        render : function( files ) {
+            for(var i = 0; i < files.length; i++) {
+                _file = files[i];
+                _reader = new FileReader();
+                _reader.readAsDataURL(_file);
+                _reader.onload = function( content ) {
+                    _preview.callback.onRender({
+                        info  : _file,
+                        content : content.target.result 
+                    });
+                }
+                _reader.onerror = function( response ) {
+                    _preview.callback.onError({
+                        code  : 2,
+                        alert : response 
+                    });
+                }
+            };
+        }
     };
 
-    $.fn.preview = function( options ){
-        return new preview( this, options );
+    $.fn.preview = function( custom ) {
+        return this.each(function() {
+          new Preview( this, custom ).setup();
+        });
     }
 
 })( jQuery, window, document );
