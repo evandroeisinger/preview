@@ -11,7 +11,8 @@ It's a file preview app. Which returns the file content and info, so you can man
 * Get file info - Done
 * Outup file content - Done
 * Callback functions - Done
-* Application exemplp
+* Create markup ( data- ) option to target the content loaded
+* Application example
 
 ## Contributing
 
