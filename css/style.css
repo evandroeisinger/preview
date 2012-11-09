@@ -27,7 +27,7 @@ body {
 		height: auto;
 		display: block;
 		margin-bottom: 20px; }
-			section.action .drop {
+			section .drop {
 				transition: background-color 0.25s;
 				-moz-transition: background-color 0.25s;
 				-webkit-transition: background-color 0.25s;
@@ -40,7 +40,26 @@ body {
 				text-align: center;
 				text-transform: uppercase;
 				color: #C1C1C1; }
-					section.action .drop:hover, section.action .drop.drag {
+					section .drop:hover, section .drop.drag {
 						border-color: black;
 						color: white;
 						background-color: black; }
+
+			section .files {
+				list-style: none;
+				margin: 0px;
+				padding: 0px;
+			}
+				section .files li {
+					text-overflow: ellipsis;
+					display: inline-block;
+					overflow: hidden;
+					max-width: 50%;
+					max-height: 150px;
+					width: 100%;
+					margin: 0px;
+					padding: 0px 5px 3px 5px;
+				}
+					section .files li img {
+						width: 100%;
+					}

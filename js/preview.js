@@ -15,7 +15,7 @@
             onLeave  : function( response ) {},
             onDrop   : function( response ) {},
             onChange : function( response ) {},
-            onRender : function( response ) {},
+            onProcess : function( response ) {},
             onError  : function( response ) {}
         }
 
@@ -30,7 +30,7 @@
                 switch( element.tagName ) {
                     case 'INPUT' :
                         element.onchange = function( event ) {
-                            render( this.files );
+                            process( this.files );
                             app.callback.onChange( event );
                         };
                         break;
@@ -53,7 +53,7 @@
                         element.ondrop = function( event ) {
                             event.stopPropagation();
                             app.callback.onDrop( event );
-                            render( event.dataTransfer.files );
+                            process( event.dataTransfer.files );
                             return false;
                         }
                         break;
@@ -66,13 +66,14 @@
             }
         }
 
-        var render = function( files ) {
+        var process = function( files ) {
             for(var i = 0; i < files.length; i++) {
                 _file = files[i];
                 _reader = new FileReader();
                 _reader.readAsDataURL(_file);
                 _reader.onload = function( content ) {
-                    app.callback.onRender({
+                    app.callback.onProcess({
+                        target : element,
                         info  : _file,
                         content : content.target.result 
                     });
