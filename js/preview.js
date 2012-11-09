@@ -1,98 +1,96 @@
 /*!
- * File preview plugin
+ * File preview app
  * Original author: Evandro Eisinger - github.com/evandroeisinger
  * Licensed under the MIT license
  */
 
-;(function ( $, window, document, undefined ) {
+;(function( $, window, document, undefined ) {
 
-    var Preview = function( element, listeners ) {
-            this.element  = element;
-            this.callback = $.extend( {}, callback, listeners );
-            _preview = this;
-        },
-        callback = {
-            onDrop   : function( response ) {},
+    $.preview = function( element, listeners ) {
+
+        var callback = {
+            onEnter  : function( response ) {},
             onDrag   : function( response ) {},
             onOver   : function( response ) {},
+            onLeave  : function( response ) {},
+            onDrop   : function( response ) {},
             onChange : function( response ) {},
             onRender : function( response ) {},
             onError  : function( response ) {}
-        },
-        _preview = null;
+        }
 
-    Preview.prototype = {
-        setup : function() {
+        var app = this;
+            app.callback = $.extend({}, callback, listeners);
+
+        var $element = $(element),
+             element = element;
+
+        app.setup = function() {
             if( window.FileReader ) {
-                switch( _preview.element.tagName ) {
+                switch( element.tagName ) {
                     case 'INPUT' :
-                        _preview.element.onchange = function( event ) {
-                            _preview.render( this.files );
-                            _preview.callback.onChange({ 
-                                files  : this.files, 
-                                _event : event
-                            });
+                        element.onchange = function( event ) {
+                            render( this.files );
+                            app.callback.onChange( event );
                         };
                         break;
                     default :
-                        _preview.element.ondragenter = function( event ) {
+                        element.ondragenter = function( event ) {
                             event.stopPropagation();
-                            _preview.callback.onDrag({
-                                target : _preview.element,
-                                _event : event
-                            });
+                            app.callback.onEnter( event );
                             return false;
                         }
-                        _preview.element.ondragover = function( event ) {
+                        element.ondragover = function( event ) {
                             event.stopPropagation();
-                            _preview.callback.onOver({
-                                target : _preview.element,
-                                _event : event
-                            });
+                            app.callback.onOver( event );
                             return false;
                         }
-                        _preview.element.ondrop = function( event ) {
+                        element.ondragleave = function( event ) {
                             event.stopPropagation();
-                            _preview.render( event.dataTransfer.files );
-                            _preview.callback.onDrop({ 
-                                files  : event.dataTransfer.files, 
-                                _event : event
-                            });
+                            app.callback.onLeave( event );
+                            return false;
+                        }
+                        element.ondrop = function( event ) {
+                            event.stopPropagation();
+                            app.callback.onDrop( event );
+                            render( event.dataTransfer.files );
                             return false;
                         }
                         break;
                 }
             } else {
-                _preview.callback.onError({
+                app.callback.onError({
                     code  : 1,
                     alert : 'This browser doesnt support the File API' 
-                })
+                });
             }
-        },
-        render : function( files ) {
+        }
+
+        var render = function( files ) {
             for(var i = 0; i < files.length; i++) {
                 _file = files[i];
                 _reader = new FileReader();
                 _reader.readAsDataURL(_file);
                 _reader.onload = function( content ) {
-                    _preview.callback.onRender({
+                    app.callback.onRender({
                         info  : _file,
                         content : content.target.result 
                     });
                 }
                 _reader.onerror = function( response ) {
-                    _preview.callback.onError({
+                    app.callback.onError({
                         code  : 2,
                         alert : response 
                     });
                 }
             };
         }
-    };
 
-    $.fn.preview = function( custom ) {
+    }
+
+    $.fn.preview = function( options ) {
         return this.each(function() {
-          new Preview( this, custom ).setup();
+            var app = new $.preview( this, options ).setup();
         });
     }
 
