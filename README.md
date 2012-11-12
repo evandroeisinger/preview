@@ -1,13 +1,13 @@
 # [Preview](http://evandroeisinger.com/preview)
 
-It's a file preview app. Which returns the file content and info, so you can manipulate as you like before post to you server-side applcation.
+It's a file preview app. Which returns the file content and info, so you can manipulate as you like before posting to your server-side applcation.
 
 * Source: [https://github.com/evandroeisinger/preview](https://github.com/evandroeisinger/preview)
 * Homepage: [http://evandroeisinger.com/preview](http://evandroeisinger.com/preview)
 
 ## Usage
 
-Preview.js accepts any DOM element, it will add these elements listeners for drag and drop files (yes, multiple-files). But input elements work when a file is selected. After the files are dropped or selected, this files are process and returned through the callback functions, allowing for instantaneous viewing of their content and information. (Name, Type, Size, Etc.)
+Preview.js accepts any DOM element, it will add these elements listeners for drag and drop files (yes, multiple-files). But input elements work when a file is selected. After the files being dropped or selected, they are processed and returned through the callback functions, allowing instantaneous viewing of their content and information. (Name, Type, Size, Etc.)
 
 ``` js
 // setup with all callback options
