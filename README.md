@@ -23,10 +23,10 @@ $('.drop').preview({
 
 // with some custom options and basic callback functions
 $('.drop').preview({
-		onEnter  : function( response ) {
+		onEnter : function( response ) {
 			$(response.target).addClass('drag');
 		},
-        onLeave  : function( response ) {
+        onLeave : function( response ) {
             $(response.target).removeClass('drag');
         },
         onDrop : function( response ) { 
@@ -38,8 +38,8 @@ $('.drop').preview({
 	            output += '<p>' + file.content + '</p>';
 	        files.append(output);
         },
-        onError  : function( response ) { 
-        	console.log( response )
+        onError : function( response ) { 
+        	console.log( response );
         }
     });
 
